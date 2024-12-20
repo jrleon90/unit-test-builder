@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { FileReaderModule } from './file-reader/file-reader.module';
+import { CreateUnitTestModule } from './create-unit-test/create-unit-test.module';
 
 @Module({
-  imports: [FileReaderModule],
+  imports: [CreateUnitTestModule],
   controllers: [AppController],
   providers: [AppService],
 })
