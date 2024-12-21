@@ -1,4 +1,6 @@
 import { Command, CommandRunner, InquirerService } from 'nest-commander';
+import { FileReaderService } from '@src/create-unit-test/file-reader/file-reader.service';
+import { GeminiService } from '@src/create-unit-test/gemini/gemini.service';
 
 @Command({
   name: 'create-unit-test',
@@ -6,7 +8,11 @@ import { Command, CommandRunner, InquirerService } from 'nest-commander';
   options: { isDefault: true },
 })
 export class CreateUnitTestCommand extends CommandRunner {
-  constructor(private readonly inquirerService: InquirerService) {
+  constructor(
+    private readonly inquirerService: InquirerService,
+    private readonly fileReaderService: FileReaderService,
+    private readonly geminiService: GeminiService,
+  ) {
     super();
   }
   async run(inputs: string[], options) {
@@ -15,6 +21,13 @@ export class CreateUnitTestCommand extends CommandRunner {
       'create-unit-test-questions',
       options,
     );
-    console.log(`Your feedback has been created`);
+    console.log('Questions asked: ', options);
+    const fileContent = await this.fileReaderService.readFile(options.filePath);
+    const unitTestResponse =
+      await this.geminiService.getPromptResponse(fileContent);
+    this.fileReaderService.writeFile(
+      unitTestResponse,
+      '/Users/joseleon/Documents/Projects/AI_Project/unit-test-builder/testFiles/UnitTestFile.ts',
+    );
   }
 }

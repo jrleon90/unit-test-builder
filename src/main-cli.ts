@@ -1,8 +1,8 @@
 import { CommandFactory } from 'nest-commander';
-import { AppModule } from './app.module';
+import { CreateUnitTestModule } from '@src/create-unit-test/create-unit-test.module';
 
 async function bootstrap() {
-  await CommandFactory.run(AppModule, ['warn', 'error']);
+  await CommandFactory.run(CreateUnitTestModule, ['warn', 'error']);
 }
 
 bootstrap();
